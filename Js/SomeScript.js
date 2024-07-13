@@ -26,12 +26,11 @@ fetch('Assets/Component/Card.html')
     
     document.addEventListener("DOMContentLoaded", function () {
         const contentDiv = document.getElementById('home');
-        const cardHid = document.getElementById('cardBand')
-
-
-        function loadPage(page,) {
+        const cardHid = document.getElementById('cardBand');
+    
+        function loadPage(page) {
             const url = `pages/${page}.html`;
-            
+    
             fetch(url)
                 .then(response => {
                     if (!response.ok) {
@@ -41,56 +40,59 @@ fetch('Assets/Component/Card.html')
                 })
                 .then(data => {
                     contentDiv.innerHTML = data;
-                    const cardTitle = document.getElementById('Card-title');
+                    updatePageTitle(page);
                     window.history.pushState({ page: page }, "", `?page=${page}`);
-                    const btnShowHide = document.getElementById('Button-show-hidd');
-                    if (page === 'Home') {
-                        cardTitle.innerText = 'Rock Song ? Heavy Metal Song ?';
-                        btnShowHide.hidden = true;
-                    } else if (page === 'Band') {
-                        cardTitle.innerText = 'วงดนตรีแนว Heavy Metal ที่แนะนำ';
-                        btnShowHide.hidden = true;
-                    }
-                    else if (page === 'fir') {
-                        cardTitle.innerText = 'Falling in Reverse';
-                    }
-                    else if (page === 'bmth') {
-                        cardTitle.innerText = 'Bring Me The Horizon';
-                    }
-                    else if (page === 'act') {
-                        cardTitle.innerText = 'Architects';
-                    }
-                    else if (page === 'bvb') {
-                        cardTitle.innerText = 'Black Veil Brides';
-                    }
-                     else {
-                        cardHid.hidden = true;
-                    }
                 })
                 .catch(error => {
                     console.error('Error loading page:', error);
                     contentDiv.innerHTML = "<h1>Page not found</h1>";
+                    updatePageTitle('Home');
                     window.history.pushState({ page: 'Home' }, "", "?page=Home");
                 });
         }
     
-        function GetCurrentPage(x) {
-            const urlShow = new URLSearchParams(window.location.search);
-            return urlShow.get(x);
+        function updatePageTitle(page) {
+            const cardTitle = document.getElementById('Card-title');
+            const btnShowHide = document.getElementById('Button-show-hidd');
+    
+            switch (page) {
+                case 'Home':
+                    cardTitle.innerText = 'Rock Song ? Heavy Metal Song ?';
+                    btnShowHide.hidden = true;
+                    break;
+                case 'Band':
+                    cardTitle.innerText = 'วงดนตรีแนว Heavy Metal ที่แนะนำ';
+                    btnShowHide.hidden = true;
+                    break;
+                case 'fir':
+                    cardTitle.innerText = 'Falling in Reverse';
+                    break;
+                case 'bmth':
+                    cardTitle.innerText = 'Bring Me The Horizon';
+                    break;
+                case 'act':
+                    cardTitle.innerText = 'Architects';
+                    break;
+                case 'bvb':
+                    cardTitle.innerText = 'Black Veil Brides';
+                    break;
+                default:
+                    cardHid.hidden = true;
+                    break;
+            }
         }
-
-        // Check the query parameter and load the respective page
-        const page = GetCurrentPage('page');
-        if (page) {
-            loadPage(page);
-        } else {
-            // Load the default page (home.html)
-            loadPage('home');
+    
+        function getCurrentPage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('page') || 'home';
         }
-
-        // Make loadPage function globally accessible
-        window.loadPage = loadPage;
+    
+        const page = getCurrentPage();
+        loadPage(page);
+    
+        window.loadPage = loadPage; // Make loadPage function globally accessible
     });
+    
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
