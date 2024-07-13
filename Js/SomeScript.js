@@ -82,7 +82,7 @@ fetch('Assets/Component/Card.html')
         // โหลดเพจขึ้นมา ถ้าโหลด Not found เกิน3ครั้ง แสดงว่าไม่มาหน้านั้นอยู่ หรือหายไป
         function loadPage(page, retries = 3) {
             const url = `pages/${page}.html`;
-    
+            console.log('Fetching:', url);
             fetch(url)
                 .then(response => {
                     if (!response.ok) {
