@@ -27,6 +27,8 @@ fetch('Assets/Component/Card.html')
     document.addEventListener("DOMContentLoaded", function () {
         const contentDiv = document.getElementById('home');
         const cardHid = document.getElementById('cardBand')
+
+
         function loadPage(page,) {
             const url = `pages/${page}.html`;
             
@@ -41,7 +43,7 @@ fetch('Assets/Component/Card.html')
                     contentDiv.innerHTML = data;
                     const cardTitle = document.getElementById('Card-title');
                     window.history.pushState({ page: page }, "", `?page=${page}`);
-
+                    const btnShowHide = document.getElementById('Button-show-hidd');
                     if (page === 'Home') {
                         cardTitle.innerText = 'Rock Song ? Heavy Metal Song ?';
                         btnShowHide.hidden = true;
