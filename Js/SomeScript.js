@@ -126,7 +126,7 @@ fetch('Assets/Component/Card.html')
                         loadPage(page, retries - 1); // Retry loading the page
                     } else {
                         contentDiv.innerHTML = "<h1>Page not found</h1>";
-                        loadPage('home');
+                        loadPage('Home');
                     }
                 });
         }
@@ -140,7 +140,7 @@ fetch('Assets/Component/Card.html')
             loadPage(page);
         } else {
             // Load the default page (home.html)
-            loadPage('home');
+            loadPage('Home');
         }
         // Make loadPage function globally accessible
         window.loadPage = loadPage;
