@@ -23,14 +23,15 @@ fetch('Assets/Component/Card.html')
     .then(data => {
         document.getElementById('cardBand').innerHTML = data;
     });
-    
+
     document.addEventListener("DOMContentLoaded", function () {
         const contentDiv = document.getElementById('home');
         const cardHid = document.getElementById('cardBand');
+        const maxRetries = 3; // Number of retries before refreshing
     
-        function loadPage(page) {
+        function loadPage(page, retries = maxRetries) {
             const url = `pages/${page}.html`;
-    
+            console.log('Fetching:', url);
             fetch(url)
                 .then(response => {
                     if (!response.ok) {
@@ -45,9 +46,17 @@ fetch('Assets/Component/Card.html')
                 })
                 .catch(error => {
                     console.error('Error loading page:', error);
-                    contentDiv.innerHTML = "<h1>Page not found</h1>";
-                    updatePageTitle('Home');
-                    window.history.pushState({ page: 'Home' }, "", "?page=Home");
+                    if (retries > 0) {
+                        console.log(`Retrying... (${retries} retries left)`);
+                        loadPage(page, retries - 1); // Retry loading the page
+                    } else {
+                        contentDiv.innerHTML = "<h1>Page not found</h1>";
+                        updatePageTitle('Home');
+                        window.history.pushState({ page: 'Home' }, "", "?page=Home");
+                        setTimeout(() => {
+                            location.reload(); // Refresh the page after retries
+                        }, 2000); // Wait for 2 seconds before refreshing
+                    }
                 });
         }
     
@@ -84,7 +93,7 @@ fetch('Assets/Component/Card.html')
     
         function getCurrentPage() {
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('page') || 'home';
+            return urlParams.get('page') || 'Home';
         }
     
         const page = getCurrentPage();
